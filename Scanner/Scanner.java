@@ -1,32 +1,176 @@
-public class Scanner {
-    
-    private final String str;
-    public int last;
+import java.io.*;
 
-    public Scanner(String str) {
-        this.str = str + " ";
-        this.last = 0;
+public class Scanner {
+
+    public final int SIZE = 512;
+    public Reader reader;
+    public char[] buffer = new char[SIZE];
+    public int firstAvailable;
+    public int end;
+    public int resInt;
+
+    public Scanner(String str) throws IOException {
+        this.reader = new StringReader(str);
+        readBuffer();
     }
 
+    public Scanner(String fileName, String encoding)
+            throws UnsupportedEncodingException, FileNotFoundException, IOException {
+        this.reader = new InputStreamReader(new FileInputStream(fileName), encoding);
+        readBuffer();
+    }
 
-    public int nextInt() {
-        
-        int start = this.last;
-        int res = 0;
-        //start equals to a probable start of the new int
-        for(int i = this.last; i < this.str.length(); i++) {
-            
-            char chr = this.str.charAt(i);
-            if (Character.isWhitespace(chr)) {
-                if (i != start) {
-                    res = Integer.valueOf(this.str.substring(start, i));
-                    this.last = i;
-                    break;
-                }
-                start = i + 1;
+    public Scanner(InputStream in) throws UnsupportedEncodingException, IOException {
+        this.reader = new InputStreamReader(in, "utf8");
+        readBuffer();
+    }
+
+    public void readBuffer() throws IOException {
+        this.firstAvailable = 0;
+        this.end = reader.read(buffer);
+    }
+
+    public void closeSc() throws IOException {
+        reader.close();
+    }
+
+    public int getDecimal(String hex) {
+        int koef = 1;
+        if (hex.charAt(0) == '-') {
+            koef = -1;
+        }
+        String digits = "0123456789ABCDEF";
+        hex = hex.toUpperCase();
+        int val = 0;
+
+        for (int i = 0; i < hex.length(); i++) {
+            char c = hex.charAt(i);
+
+            if (c != '-') {
+
+                int d = digits.indexOf(c);
+                val = 16 * val + d;
             }
         }
-        return res;
+
+        return val * koef;
     }
-       
+
+    public boolean isSep(char ch) {
+        
+        String sp = System.lineSeparator();
+        int n = sp.length();
+
+        for(int i = 0; i < n; i++) {
+            if (ch == sp.charAt(i)) {
+                return true;
+            } 
+        }
+        return false;
+    }
+
+    public String nextWord() throws IOException {
+
+        StringBuilder sb = new StringBuilder();
+        int now = firstAvailable;
+
+        while (end != -1) {
+            firstAvailable = now + 1;
+            if (now == SIZE) {
+                readBuffer();
+                now = 0;
+                firstAvailable = now + 1;
+            }
+            if (now == end) {
+                if (sb.length() == 0) {
+                    closeSc();
+                    return null;
+                } else {
+                    break;
+                }
+            }
+
+            if ((Character.getType(buffer[now]) == Character.DASH_PUNCTUATION) || Character.isLetter(buffer[now])
+                    || buffer[now] == '\'') {
+                sb.append(buffer[now]);
+            } else {
+                break;
+            }
+            now++;
+        }
+        return sb.toString().toLowerCase();
+    }
+
+    public boolean hasNextInt() throws IOException {
+
+        StringBuilder sb = new StringBuilder();
+        int i = firstAvailable;
+
+        while (true) {
+
+            firstAvailable = i + 1;
+
+            if (i >= end) {
+                if (end == SIZE) {
+                    readBuffer();
+                    i = 0;
+                    firstAvailable = 1;
+                } else {
+                    break;
+                }
+            }
+
+            if (Character.isWhitespace(buffer[i]) || isSep(buffer[i])) {
+                if (sb.length() != 0) {
+                    break;
+                }
+            } else if (end != -1) {
+                sb.append(buffer[i]);
+            }
+            i++;
+        }
+
+        if (sb.length() == 0) {
+            return false;
+        } else {
+            this.resInt = getDecimal(sb.toString());
+            return true;
+        }
+    }
+
+    public int nextInt() {
+        return this.resInt;
+    }
+
+    public String nextLine() throws IOException {
+
+        StringBuilder sb = new StringBuilder();
+        int now = firstAvailable;
+
+        while (end != -1) {
+
+            if (now == SIZE) {
+                readBuffer();
+                now = 0;
+
+            }
+            firstAvailable = now + 1;
+            if (now == end) {
+                if (sb.length() == 0) {
+                    closeSc();
+                    return null;
+                } else {
+                    break;
+                }
+            }
+
+            if (buffer[now] == '\n') {
+                break;
+            } else {
+                sb.append(buffer[now]);
+            }
+            now++;
+        }
+        return sb.toString().toLowerCase();
+    }
 }
