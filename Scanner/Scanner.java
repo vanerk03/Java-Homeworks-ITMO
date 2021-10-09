@@ -56,17 +56,8 @@ public class Scanner {
         return val * koef;
     }
 
-    public boolean isSep(char ch) {
-        
-        String sp = System.lineSeparator();
-        int n = sp.length();
-
-        for(int i = 0; i < n; i++) {
-            if (ch == sp.charAt(i)) {
-                return true;
-            } 
-        }
-        return false;
+    public boolean isSep(char chr) {
+        return (chr == '\n' || chr == '\r' || chr == '\u2028' || chr == '\u2029' || chr == '\u0085');
     }
 
     public String nextWord() throws IOException {
@@ -152,8 +143,8 @@ public class Scanner {
             if (now == SIZE) {
                 readBuffer();
                 now = 0;
-
             }
+            
             firstAvailable = now + 1;
             if (now == end) {
                 if (sb.length() == 0) {
@@ -164,8 +155,23 @@ public class Scanner {
                 }
             }
 
-            if (buffer[now] == '\n') {
+            if (buffer[now] == '\r') {
+                if (now + 1 == SIZE) {
+                    readBuffer();
+                    now = 0;
+                    if (buffer[now] == '\n') {
+                        firstAvailable = 1;
+                    }
+                }
+
+                else if (buffer[now + 1] == '\n') {
+                    firstAvailable = now + 2;
+                }
                 break;
+
+            } else if (isSep(buffer[now])) {
+                break;
+
             } else {
                 sb.append(buffer[now]);
             }
