@@ -2,25 +2,18 @@ package markup;
 
 import java.util.List;
 
-public class Paragraph {
-    
-    public StringBuilder sb;
+public class Paragraph extends AbstractText {
 
-    public Paragraph(List<PlainText> lst) {
-    
-        this.sb = new StringBuilder();
-        
-        for (PlainText elem: lst) {
-            sb.append(elem.getSb());
-        }
+    public Paragraph(List<AbstractText> lst) {
+        super(lst, "");
     }
     
     public void toMarkdown(StringBuilder sb_param) {
-        sb_param.append(sb);
+        sb_param.append(getSb());
     }
     
     @Override
     public String toString() {
-        return sb.toString();
+        return getSb().toString();
     }
 }

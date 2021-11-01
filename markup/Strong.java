@@ -2,19 +2,9 @@ package markup;
 
 import java.util.List;
 
-public class Strong extends PlainText {
-    // private final String spec = "__";
+public class Strong extends AbstractText {
 
-    public Strong(String s) {
-        super(s, "__");
-    }
-
-    public Strong(List<PlainText> lst) {
+    public Strong(List<AbstractText> lst) {
         super(lst, "__");
     }
-
-    public StringBuilder getSb() {
-        return this.sb;
-    }
-
 }
