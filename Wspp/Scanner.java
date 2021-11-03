@@ -8,7 +8,6 @@ public class Scanner {
     public int firstAvailable;
     public int end;
 
-
     public Scanner(String str) throws IOException {
         this.reader = new StringReader(str);
         readBuffer();
@@ -79,14 +78,14 @@ public class Scanner {
 
         StringBuilder sb = new StringBuilder();
         int now = firstAvailable;
-        
+
         while (end != -1) {
 
             if (now == SIZE) {
                 readBuffer();
                 now = 0;
             }
-            
+
             firstAvailable = now + 1;
             if (now >= end) {
                 if (sb.length() == 0) {

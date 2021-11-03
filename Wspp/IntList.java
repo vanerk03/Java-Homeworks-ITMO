@@ -13,9 +13,9 @@ public class IntList {
     public void append(int x, int ps) {
         if (this.size == array.length) {
             extend();
-            
+
         }
-        this.pos[size] = ps;    
+        this.pos[size] = ps;
         this.array[size++] = x;
     }
 
@@ -48,7 +48,7 @@ public class IntList {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0;  i < size; i++) {
+        for (int i = 0; i < size; i++) {
             sb.append(array[i]);
             if (i != size - 1) {
                 sb.append(" ");

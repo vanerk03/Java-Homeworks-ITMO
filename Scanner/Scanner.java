@@ -144,7 +144,7 @@ public class Scanner {
                 readBuffer();
                 now = 0;
             }
-            
+
             firstAvailable = now + 1;
             if (now == end) {
                 if (sb.length() == 0) {

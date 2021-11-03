@@ -16,7 +16,7 @@ public class WsppSortedPosition {
             int now = 1;
             int num = 1;
             Scanner sc = new Scanner(args[0], "utf8");
-            
+
             try (BufferedWriter writer = wrapWriter(args[1])) {
                 try {
 
@@ -49,18 +49,18 @@ public class WsppSortedPosition {
                         }
                         num++;
                     }
-                    
+
                     for (String key : treeMap.keySet()) {
-                        
+
                         IntList lst = treeMap.get(key);
                         int sz = lst.getSize();
-                        
+
                         writer.write(key + " " + sz + " ");
                         int[] temp = lst.getArray();
                         int[] pos = lst.getPos();
 
                         for (int i = 0; i < sz; i++) {
-        
+
                             if (i != sz - 1) {
                                 writer.write(pos[i] + ":" + temp[i] + " ");
                             } else {
