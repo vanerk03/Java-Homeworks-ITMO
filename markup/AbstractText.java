@@ -3,23 +3,39 @@ package markup;
 import java.util.List;
 
 public abstract class AbstractText {
-    private StringBuilder sb;
 
-    public AbstractText(String s, String sign) {
-        this.sb = new StringBuilder(sign);
-        sb.append(s);
-        sb.append(sign);
+    private String start = "";
+    private String end = "";
+    private String sign = "";
+
+    protected String s;
+    protected List<AbstractText> lst;
+
+    public AbstractText(String str) {
+        this.s = str;
     }
 
-    public AbstractText(List<AbstractText> lst, String sign) {
-        this.sb = new StringBuilder(sign);
+    public AbstractText(List<AbstractText> lst, String start, String end, String sign) {
+        this.lst = lst;
+        this.start = start;
+        this.end = end;
+        this.sign = sign;
+    }
+
+    public void toMarkdown(StringBuilder sb) {
+        sb.append(sign);
         for (AbstractText elem : lst) {
-            sb.append(elem.getSb());
+            elem.toMarkdown(sb);
         }
         sb.append(sign);
     }
 
-    public StringBuilder getSb() {
-        return sb;
+    public void toHtml(StringBuilder sb) {
+        sb.append(start);
+        for (AbstractText elem : lst) {
+            elem.toHtml(sb);
+            
+        }
+        sb.append(end);
     }
 }
