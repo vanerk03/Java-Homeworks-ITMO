@@ -2,20 +2,20 @@ package markup;
 
 import java.util.List;
 
-public abstract class AbstractText {
+public abstract class AbstractText implements HtmlMarkdown {
 
     private String start = "";
     private String end = "";
     private String sign = "";
 
     protected String s;
-    protected List<AbstractText> lst;
+    protected List<HtmlMarkdown> lst;
 
     public AbstractText(String str) {
         this.s = str;
     }
 
-    public AbstractText(List<AbstractText> lst, String start, String end, String sign) {
+    public AbstractText(List<HtmlMarkdown> lst, String start, String end, String sign) {
         this.lst = lst;
         this.start = start;
         this.end = end;
@@ -24,7 +24,7 @@ public abstract class AbstractText {
 
     public void toMarkdown(StringBuilder sb) {
         sb.append(sign);
-        for (AbstractText elem : lst) {
+        for (HtmlMarkdown elem : lst) {
             elem.toMarkdown(sb);
         }
         sb.append(sign);
@@ -32,7 +32,7 @@ public abstract class AbstractText {
 
     public void toHtml(StringBuilder sb) {
         sb.append(start);
-        for (AbstractText elem : lst) {
+        for (HtmlMarkdown elem : lst) {
             elem.toHtml(sb);
             
         }

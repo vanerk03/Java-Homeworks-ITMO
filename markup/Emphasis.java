@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Emphasis extends AbstractText {
     
-    public Emphasis(List<AbstractText> lst) {
+    public Emphasis(List<HtmlMarkdown> lst) {
         super(lst, "<em>", "</em>", "*");
     }
 }

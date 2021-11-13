@@ -4,8 +4,7 @@ import java.util.List;
 
 public class Strikeout extends AbstractText {
 
-
-    public Strikeout(List<AbstractText> lst) {
+    public Strikeout(List<HtmlMarkdown> lst) {
         super(lst, "<s>", "</s>", "~");
     }
 }
